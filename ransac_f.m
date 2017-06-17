@@ -1,16 +1,21 @@
-function indexes = ran(frames1, frames2, matches)
+function indexes = ransac_f(frames1, frames2, matches)
 
 matches_num = size(matches, 2);
-sample_num = ceil(0.3 * matches_num);
+sample_num = ceil(0.2 * matches_num);
 
 best_inline = 1:sample_num;
 best_err = sample_num * 100;
 
 err_threshold = 0.02;
 
+
+
 for iter = 1:500
     % select random subset
-    rand_index = randperm(matches_num, sample_num); 
+    %rand_index = randperm(matches_num, sample_num); 
+    inliers = rand(1, length(matches)) > .5;
+    rand_index = 1:length(matches);
+    rand_index = rand_index(inliers);
     
     % solve fundamental matrix
     f = eightPoint(frames1, frames2, matches(:, rand_index));
@@ -44,12 +49,13 @@ for iter = 1:500
     err = err / size(rand_index, 2);
     
     % update best model(best error && more than half inline)
-    if((err < best_err) && (size(rand_index, 2) > ceil(0.5 * matches_num)))
+    if((err < best_err) && (size(rand_index, 2) > 8))
         best_err = err;
         best_inline = rand_index;        
     end
     
     disp(['iter: ', num2str(iter), 'error: ', num2str(best_err)])
+    
     
 end
 

@@ -1,4 +1,4 @@
-function indexes = ran2(frames1, frames2, matches)
+function indexes = ransac_h(frames1, frames2, matches)
 
 matches_num = size(matches, 2);
 sample_num = 8;
@@ -7,7 +7,7 @@ best_inline = 1:sample_num;
 best_err = sample_num * 100;
 
 
-for iter = 1:100
+for iter = 1:1000
     % select random subset
     rand_index = randperm(matches_num, sample_num); 
     
@@ -24,7 +24,7 @@ for iter = 1:100
         x2 = frames2(1, matches(2, i));
         y2 = frames2(2, matches(2, i));
        
-        err = err + ab[x1,y1,1] * f * [x2;y2;1];        
+        err = err + abs([x1,y1,1] * f * [x2;y2;1]);        
     end
     
     % update best model(best error && more than half inline)
