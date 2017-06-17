@@ -24,7 +24,7 @@ f = f';
 
 [u, d, v] = svd(f);
 d(3, 3) = 0;
-f = u * d * v';
+f = u * d * v.';
 
 
 end

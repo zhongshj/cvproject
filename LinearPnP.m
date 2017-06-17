@@ -1,0 +1,1 @@
+function [C, R] = LinearPnP(X, x, K)
