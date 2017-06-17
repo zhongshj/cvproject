@@ -6,7 +6,7 @@ sample_num = ceil(0.2 * matches_num);
 best_inline = 1:sample_num;
 best_err = sample_num * 100;
 
-err_threshold = 0.02;
+err_threshold = 0.01;
 
 
 
