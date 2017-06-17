@@ -1,12 +1,12 @@
 %% read image & sift
 I1 = im2double(imread('7.jpg'));
 I2 = im2double(imread('8.jpg'));
-I1 = imresize(I1, [1000,1000]);
-I2 = imresize(I2, [1000,1000]);
+I1 = imresize(I1, [500,500]);
+I2 = imresize(I2, [500,500]);
 I1 = imrotate(I1, -90);
 I2 = imrotate(I2, -90);
-[frames1, descr1] = sift(rgb2gray(I1), 'Threshold', 0.02);
-[frames2, descr2] = sift(rgb2gray(I2), 'Threshold', 0.02);
+[frames1, descr1] = sift(rgb2gray(I1), 'Threshold', 0.01);
+[frames2, descr2] = sift(rgb2gray(I2), 'Threshold', 0.01);
 descr1 = uint8(512 * descr1);
 descr2 = uint8(512 * descr2);
 matches = siftmatch(descr1, descr2);
@@ -39,4 +39,17 @@ end
 %choose the correct camera pose
 [C,R,X] = DisambiguateCameraPose(C_set, R_set, X_set);
 %%
-plot3(X(:,1),X(:,2),X(:,3));
+scatter3(X(:,1),X(:,2),X(:,3));
+
+%%
+x = X(:,1)'
+y = X(:,2)'
+z = X(:,3)'
+x = x - min(x);
+x = x / max(x);
+y = y - min(y);
+y = y / max(y);
+
+[Xq,Yq] = meshgrid(0:0.01:1);
+Vq = interp2(x,y,z,Xq,Yq);
+%depth_plot = depth_plot / max(depth_plot);
