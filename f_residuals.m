@@ -15,7 +15,7 @@ L = L ./ repmat(sqrt(L(:,1).^2 + L(:,2).^2), 1, 3);
 distances = sum(L .* samples1, 2);
 
 % get residuals
-residuals = abs(distances);
+residuals = distances;
 
 
 end

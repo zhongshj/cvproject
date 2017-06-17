@@ -23,7 +23,7 @@ function inliers = ransac_ff(frames1, frames2, matches)
 
             % Fit homography based on current inliers
             F = eightPoint(frames1, frames2, matches(:, inliers));
-            residuals = f_residuals(F, [frames1(1:2, matches(1,inliers))', ones(sum(inliers),1)], [frames2(1:2, matches(2,inliers))', ones(sum(inliers),1)]);
+            residuals = abs(f_residuals(F, [frames1(1:2, matches(1,inliers))', ones(sum(inliers),1)], [frames2(1:2, matches(2,inliers))', ones(sum(inliers),1)]));
 
             % Store best model until now
             if sum(residuals(:)) / sum(inliers) < best_err
@@ -35,7 +35,7 @@ function inliers = ransac_ff(frames1, frames2, matches)
             %err = sum(err .^ 2, 1);
             
             % Update set of inliers
-            inliers = abs(err - mean(err)) < .4 * std(err);
+            inliers = abs(err - mean(err)) < .5 * std(err);
         end 
     end
 
